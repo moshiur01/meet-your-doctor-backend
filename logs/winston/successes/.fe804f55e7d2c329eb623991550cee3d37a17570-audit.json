@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "E:\\uni-project-v3\\ts-backend-postgres-prisma-template\\logs\\winston\\successes\\.fe804f55e7d2c329eb623991550cee3d37a17570-audit.json",
+    "files": [
+        {
+            "date": 1703530592476,
+            "name": "E:\\uni-project-v3\\ts-backend-postgres-prisma-template\\logs\\winston\\successes\\phu-2023-26-12-00-success.log",
+            "hash": "3e79edc817c05ec9e90a531f44b8680c4d13e3e1af106db77a332c6f5432d02e"
+        },
+        {
+            "date": 1703530848044,
+            "name": "E:\\uni-project-v3\\ts-backend-postgres-prisma-template\\logs\\winston\\successes\\phu-2023-26-12-01-success.log",
+            "hash": "f02e3cc74d960bbc28902ba0688d61307d5c94c304c62fa84c0944598d1fd304"
+        }
+    ],
+    "hashType": "sha256"
+}
