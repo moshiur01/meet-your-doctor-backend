@@ -7,9 +7,9 @@ router.post(
   '/create-specialization',
   specializationController.createSpecialization
 );
-router.get(
-  '/get-specializations',
-  specializationController.getAllSpecializations
-);
+router.get('/', specializationController.getAllSpecializations);
+router.get('/:id', specializationController.getSingleSpecialization);
+router.patch('/:id', specializationController.updateSpecialization);
+router.delete('/:id', specializationController.deleteSpecialization);
 
-export const specializationRoute = router;
+export const specializationRoutes = router;

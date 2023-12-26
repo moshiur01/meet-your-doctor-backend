@@ -1,13 +1,18 @@
 import express from 'express';
-import { specializationRoute } from '../modules/specializations/specialization.routes';
+import { doctorRoutes } from '../modules/doctors/doctor.routes';
+import { specializationRoutes } from '../modules/specializations/specialization.routes';
 
 const router = express.Router();
 
 const moduleRoutes = [
   // ... routes
   {
-    path: '/specialization',
-    route: specializationRoute,
+    path: '/specializations',
+    route: specializationRoutes,
+  },
+  {
+    path: '/doctors',
+    route: doctorRoutes,
   },
 ];
 
