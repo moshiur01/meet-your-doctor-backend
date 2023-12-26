@@ -24,6 +24,11 @@
             "date": 1703574009619,
             "name": "E:\\uni-project-v3\\ts-backend-postgres-prisma-template\\logs\\winston\\errors\\phu-2023-26-12-13-error.log",
             "hash": "a30fb5f1ed7076f1a650cd89a8c64332d43e88c02c2e40bd6f6ba651fa084f3b"
+        },
+        {
+            "date": 1703577816056,
+            "name": "E:\\uni-project-v3\\ts-backend-postgres-prisma-template\\logs\\winston\\errors\\phu-2023-26-12-14-error.log",
+            "hash": "f327edcd93cc8d4c35542bac99e416e3df26df694e965c0f163920ac7d098594"
         }
     ],
     "hashType": "sha256"
