@@ -15,6 +15,8 @@ model Doctor {
   fullName        String  @map("full_name")
   email           String  @unique
   phoneNumber     String  @unique @map("phone_number")
+  gender          String
+  imageURL        String  @map("image_url")
   role            String  @default("doctor")
   password        String
   isPasswordReset Boolean @default(false) @map("is_password_reset")

@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import { paginationFields } from '../../../constants/pagination';
 import catchAsync from '../../../shared/catchAsync';
+import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
+import { doctorFilterableFields } from './doctor.constrain';
 import { doctorService } from './doctor.service';
 
 const createDoctor = catchAsync(async (req: Request, res: Response) => {
@@ -15,7 +18,9 @@ const createDoctor = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllDoctor = catchAsync(async (req: Request, res: Response) => {
-  const result = await doctorService.getAllDoctor();
+  const filters = pick(req.query, doctorFilterableFields);
+  const options = pick(req.query, paginationFields);
+  const result = await doctorService.getAllDoctor(filters, options);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -43,6 +48,7 @@ const updateDoctor = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 const deleteDoctor = catchAsync(async (req: Request, res: Response) => {
   const result = await doctorService.deleteDoctor(req?.params?.id);
   sendResponse(res, {
