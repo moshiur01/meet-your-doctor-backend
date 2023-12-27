@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import { paginationFields } from '../../../constants/pagination';
 import catchAsync from '../../../shared/catchAsync';
+import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
+import { specializationFilterableFields } from './specialization.constrain';
 import { specializationServices } from './specialization.service';
 
 const createSpecialization = catchAsync(async (req: Request, res: Response) => {
@@ -16,7 +19,12 @@ const createSpecialization = catchAsync(async (req: Request, res: Response) => {
 
 const getAllSpecializations = catchAsync(
   async (req: Request, res: Response) => {
-    const result = await specializationServices.getAllSpecializations();
+    const options = pick(req.query, paginationFields); //here
+    const filters = pick(req.query, specializationFilterableFields);
+    const result = await specializationServices.getAllSpecializations(
+      options,
+      filters
+    );
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
