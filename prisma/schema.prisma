@@ -55,6 +55,7 @@ model Patient {
   email       String @unique
   phoneNumber String @unique @map("phone_number")
   role        String @default("patient")
+  password    String
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -68,7 +69,7 @@ model Patient {
 
 model MedicalProfile {
   id               String  @id @default(uuid())
-  profilePicture   String  @map("profile_picture")
+  profilePicture   String? @map("profile_picture")
   address          String
   dateOfBirth      String  @map("date_of_birth")
   gender           String
@@ -89,7 +90,7 @@ model MedicalProfile {
 model Appointment {
   id              String   @id @default(uuid())
   appointmentDate DateTime @map("appointment_date")
-  status          Boolean
+  status          Boolean  @map("appointment_status")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

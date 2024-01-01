@@ -6,7 +6,7 @@ const handleValidationError = (
 ): IGenericErrorResponse => {
   const errors = [
     {
-      path: '',
+      path: '', // as prisma don't give us any path
       message: error.message,
     },
   ];
