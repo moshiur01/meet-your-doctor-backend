@@ -1,5 +1,6 @@
 import express from 'express';
 import { doctorRoutes } from '../modules/doctors/doctor.routes';
+import { MedicalProfileRoutes } from '../modules/medicalProfiles/medicalProfile.routes';
 import { PatientRoutes } from '../modules/patients/patient.routes';
 import { specializationRoutes } from '../modules/specializations/specialization.routes';
 
@@ -18,6 +19,10 @@ const moduleRoutes = [
   {
     path: '/patients',
     route: PatientRoutes,
+  },
+  {
+    path: '/medical-profile',
+    route: MedicalProfileRoutes,
   },
 ];
 

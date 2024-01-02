@@ -64,6 +64,21 @@
             "date": 1704124958338,
             "name": "E:\\uni-project-v3\\ts-backend-postgres-prisma-template\\logs\\winston\\errors\\phu-2024-01-01-22-error.log",
             "hash": "cf756420b0194ee9580e56e31f254fbdbe18888a2dba8e8f7b7ef65973e8cc14"
+        },
+        {
+            "date": 1704128421426,
+            "name": "E:\\uni-project-v3\\ts-backend-postgres-prisma-template\\logs\\winston\\errors\\phu-2024-01-01-23-error.log",
+            "hash": "b6a67fc7a34bcffaf2727e39b91360904af0c09344973972826cca71f2cd28b1"
+        },
+        {
+            "date": 1704167678897,
+            "name": "E:\\uni-project-v3\\ts-backend-postgres-prisma-template\\logs\\winston\\errors\\phu-2024-02-01-09-error.log",
+            "hash": "8f6683d297eb8451229962ca2320eeb7ecde981c3298d7049591889bf097db6c"
+        },
+        {
+            "date": 1704168046170,
+            "name": "E:\\uni-project-v3\\ts-backend-postgres-prisma-template\\logs\\winston\\errors\\phu-2024-02-01-10-error.log",
+            "hash": "98b07e0d6280df55040fef57fc877a307739f7a7085bbcf99b4feeb5a9ad0abc"
         }
     ],
     "hashType": "sha256"

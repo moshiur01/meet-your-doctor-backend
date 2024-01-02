@@ -38,12 +38,10 @@ const getAllPatients = async (
 ): Promise<IGenericResponse<Patient[]>> => {
   const { limit, page, skip } = paginationHelpers.calculatePagination(options);
 
-  const { searchTerm } = filters;
-
   const andConditions = [];
 
   //*partial match
-  if (searchTerm) {
+  if (filters.searchTerm) {
     andConditions.push({
       OR: patientSearchableFields.map(field => ({
         [field]: {
@@ -59,6 +57,9 @@ const getAllPatients = async (
 
   const result = await prisma.patient.findMany({
     where: whereConditions,
+    include: {
+      medicalProfile: true,
+    },
     skip,
     take: limit,
     orderBy:
@@ -84,7 +85,44 @@ const getAllPatients = async (
   };
 };
 
+const getSinglePatient = async (id: string): Promise<Patient | null> => {
+  const result = await prisma.patient.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return result;
+};
+
+const updatePatient = async (
+  id: string,
+  payload: Partial<Patient>
+): Promise<Patient | null> => {
+  const result = await prisma.patient.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+
+  return result;
+};
+
+const deletePatient = async (id: string): Promise<Patient | null> => {
+  const result = await prisma.patient.delete({
+    where: {
+      id,
+    },
+  });
+
+  return result;
+};
+
 export const patientService = {
   CreatePatient,
   getAllPatients,
+  getSinglePatient,
+  updatePatient,
+  deletePatient,
 };

@@ -37,7 +37,42 @@ const getAllPatients = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getSinglePatient = catchAsync(async (req: Request, res: Response) => {
+  const result = await patientService.getSinglePatient(req?.params?.id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Single patient data Successfully',
+    data: result,
+  });
+});
+const updatePatient = catchAsync(async (req: Request, res: Response) => {
+  const result = await patientService.updatePatient(req?.params?.id, req?.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Patient data updated Successfully',
+    data: result,
+  });
+});
+
+const deletePatient = catchAsync(async (req: Request, res: Response) => {
+  const result = await patientService.deletePatient(req?.params?.id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Patient data deleted Successfully',
+    data: result,
+  });
+});
+
 export const patientController = {
   cratePatient,
   getAllPatients,
+  getSinglePatient,
+  updatePatient,
+  deletePatient,
 };
