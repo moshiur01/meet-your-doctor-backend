@@ -109,13 +109,24 @@ const updatePatient = async (
   return result;
 };
 
-const deletePatient = async (id: string): Promise<Patient | null> => {
-  const result = await prisma.patient.delete({
-    where: {
-      id,
-    },
-  });
+const deletePatient = async (id: string): Promise<any> => {
+  const result = await prisma.$transaction(async transactionClient => {
+    const deleteMedicalProfile = await prisma.medicalProfile.delete({
+      where: {
+        patientId: id,
+      },
+    });
+    const deletePatient = await transactionClient.patient.delete({
+      where: {
+        id,
+      },
+    });
 
+    return {
+      patient: deletePatient,
+      medicalProfile: deleteMedicalProfile,
+    };
+  });
   return result;
 };
 
