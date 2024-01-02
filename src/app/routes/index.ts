@@ -1,5 +1,6 @@
 import express from 'express';
 import { appointmentRoutes } from '../modules/appointments/appointment.routes';
+import { availableDoctorRoutes } from '../modules/availableDoctors/availableDoctor.routes';
 import { availableServiceRoutes } from '../modules/availableServices/availableService.routes';
 import { doctorRoutes } from '../modules/doctors/doctor.routes';
 import { MedicalProfileRoutes } from '../modules/medicalProfiles/medicalProfile.routes';
@@ -25,7 +26,7 @@ const moduleRoutes = [
     route: PatientRoutes,
   },
   {
-    path: '/medical-profile',
+    path: '/medical-profiles',
     route: MedicalProfileRoutes,
   },
   {
@@ -41,8 +42,12 @@ const moduleRoutes = [
     route: servicesRoutes,
   },
   {
-    path: '/time-slot',
+    path: '/time-slots',
     route: timeSlotRoutes,
+  },
+  {
+    path: '/available-doctors',
+    route: availableDoctorRoutes,
   },
 ];
 
