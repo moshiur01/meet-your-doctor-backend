@@ -19,7 +19,7 @@ const getAllMedicalProfile = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Medical profile data fetched Successfully',
+    message: 'Medical profile data fetched successfully',
     data: result,
   });
 });
@@ -33,7 +33,7 @@ const getSingleMedicalProfile = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Single medical profile data Successfully',
+      message: 'Single medical profile data successfully',
       data: result,
     });
   }
@@ -48,7 +48,7 @@ const updateMedicalProfile = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Medical profile data updated Successfully',
+    message: 'Medical profile data updated successfully',
     data: result,
   });
 });
