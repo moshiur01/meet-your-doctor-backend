@@ -90,7 +90,7 @@ model MedicalProfile {
 model Appointment {
   id              String   @id @default(uuid())
   appointmentDate DateTime @map("appointment_date")
-  status          Boolean  @map("appointment_status")
+  status          String   @map("appointment_status")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

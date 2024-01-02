@@ -14,7 +14,7 @@ import { IMedicalProfileFilterRequest } from './medicalProfile.interface';
 const getAllMedicalProfile = async (
   options: IPaginationOptions,
   filters: IMedicalProfileFilterRequest
-): Promise<IGenericResponse<MedicalProfile>> => {
+): Promise<IGenericResponse<MedicalProfile[]>> => {
   const { limit, page, skip } = paginationHelpers.calculatePagination(options);
 
   const { searchTerm, ...filterData } = filters;
