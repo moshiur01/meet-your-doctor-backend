@@ -5,6 +5,7 @@ import { availableServiceRoutes } from '../modules/availableServices/availableSe
 import { doctorRoutes } from '../modules/doctors/doctor.routes';
 import { MedicalProfileRoutes } from '../modules/medicalProfiles/medicalProfile.routes';
 import { PatientRoutes } from '../modules/patients/patient.routes';
+import { paymentRoutes } from '../modules/payment/payment.routes';
 import { servicesRoutes } from '../modules/services/service.routes';
 import { specializationRoutes } from '../modules/specializations/specialization.routes';
 import { timeSlotRoutes } from '../modules/timeSlot/timeSlot.routes';
@@ -48,6 +49,10 @@ const moduleRoutes = [
   {
     path: '/available-doctors',
     route: availableDoctorRoutes,
+  },
+  {
+    path: '/payments',
+    route: paymentRoutes,
   },
 ];
 
