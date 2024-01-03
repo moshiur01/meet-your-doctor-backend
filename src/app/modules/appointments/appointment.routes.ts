@@ -8,6 +8,10 @@ router.patch(
   '/cancel-appointment/:id',
   appointmentController.canceledAppointment
 );
+router.patch(
+  '/finish-appointment/:id',
+  appointmentController.finishAppointment
+);
 
 router.get('/', appointmentController.getAllAppointment);
 router.get('/:id', appointmentController.getSingleAppointment);

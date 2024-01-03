@@ -125,10 +125,10 @@ model Service {
 }
 
 model Payment {
-  id            String   @id @default(uuid())
+  id            String    @id @default(uuid())
   amount        String
-  paymentDate   DateTime @default(now()) @map("payment_date")
-  paymentStatus String   @map("payment_status")
+  paymentDate   DateTime? @map("payment_date")
+  paymentStatus String    @map("payment_status")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

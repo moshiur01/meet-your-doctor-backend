@@ -34,6 +34,17 @@ const canceledAppointment = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const finishAppointment = catchAsync(async (req: Request, res: Response) => {
+  const result = await appointmentService.finishAppointment(req?.params?.id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Appointment finished successfully',
+    data: result,
+  });
+});
+
 const getAllAppointment = catchAsync(async (req: Request, res: Response) => {
   const options = pick(req.query, paginationFields);
   const filters = pick(req.query, appointmentFilterableFields);
@@ -91,4 +102,5 @@ export const appointmentController = {
   getSingleAppointment,
   updateAppointment,
   deleteAppointment,
+  finishAppointment,
 };

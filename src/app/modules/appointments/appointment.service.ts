@@ -147,6 +147,60 @@ const canceledAppointment = async (appointmentId: string): Promise<any> => {
   return canceledAppointment;
 };
 
+const finishAppointment = async (appointmentId: string): Promise<any> => {
+  const appointment = await prisma.appointment.findUnique({
+    where: {
+      id: appointmentId,
+    },
+  });
+
+  if (!appointment) {
+    throw new Error('Appointment does not exist');
+  }
+
+  if (appointment.status === 'cancelled') {
+    throw new Error('Appointment has already been cancelled');
+  }
+
+  const finishedAppointment = await prisma.$transaction(
+    async transactionClient => {
+      await transactionClient.payment.update({
+        where: {
+          appointmentId,
+        },
+        data: {
+          paymentStatus: 'paid',
+          paymentDate: new Date().toISOString(),
+        },
+      });
+
+      const appointmentToFinish = await transactionClient.appointment.update({
+        where: {
+          id: appointmentId,
+        },
+        data: {
+          status: 'finished',
+        },
+      });
+
+      if (!appointmentToFinish) {
+        await transactionClient.payment.update({
+          where: {
+            appointmentId,
+          },
+          data: {
+            paymentStatus: 'refund',
+          },
+        });
+      }
+
+      return appointmentToFinish;
+    }
+  );
+
+  return finishedAppointment;
+};
+
 const getAllAppointment = async (
   options: IPaginationOptions,
   filters: IAppointmentFilterRequest
@@ -255,4 +309,5 @@ export const appointmentService = {
   getSingleAppointment,
   updateAppointment,
   deleteAppointment,
+  finishAppointment,
 };
