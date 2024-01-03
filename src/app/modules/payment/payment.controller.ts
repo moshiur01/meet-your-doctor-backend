@@ -21,6 +21,30 @@ const getAllPayment = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getSinglePayment = catchAsync(async (req: Request, res: Response) => {
+  const result = await paymentService.getSinglePayment(req?.params?.id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Single payment data fetched successfully',
+    data: result,
+  });
+});
+
+const updatePayment = catchAsync(async (req: Request, res: Response) => {
+  const result = await paymentService.updatePayment(req?.params?.id, req?.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Payment data updated successfully',
+    data: result,
+  });
+});
+
 export const paymentController = {
   getAllPayment,
+  getSinglePayment,
+  updatePayment,
 };

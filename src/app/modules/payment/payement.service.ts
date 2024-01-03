@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Payment, Prisma } from '@prisma/client';
+import httpStatus from 'http-status';
+import ApiError from '../../../errors/ApiError';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
@@ -78,6 +80,38 @@ const getAllPayment = async (
   };
 };
 
+const getSinglePayment = async (id: string): Promise<Payment | null> => {
+  const result = await prisma.payment.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return result;
+};
+
+const updatePayment = async (
+  id: string,
+  payload: Partial<Payment>
+): Promise<Payment | null> => {
+  const isExists = await getSinglePayment(id);
+
+  if (!isExists) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Payment data not Found');
+  }
+
+  const result = await prisma.payment.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+
+  return result;
+};
+
 export const paymentService = {
   getAllPayment,
+  getSinglePayment,
+  updatePayment,
 };
