@@ -7,5 +7,9 @@ router.post(
   '/create-available-service',
   AvailableServiceController.createAvailableService
 );
+router.get('/', AvailableServiceController.getAllAvailableService);
+router.get('/:id', AvailableServiceController.getSingleAvailableService);
+router.patch('/:id', AvailableServiceController.getAllAvailableService);
+router.delete('/:id', AvailableServiceController.deleteAvailableService);
 
 export const availableServiceRoutes = router;
