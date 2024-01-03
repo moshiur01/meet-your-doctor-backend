@@ -45,7 +45,7 @@ const getAllPatients = async (
     andConditions.push({
       OR: patientSearchableFields.map(field => ({
         [field]: {
-          contains: filters,
+          contains: filters.searchTerm,
           mode: 'insensitive',
         },
       })),
