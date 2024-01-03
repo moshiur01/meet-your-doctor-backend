@@ -208,7 +208,7 @@ model Admin {
   image           String
   password        String
   role            String  @default("admin")
-  isPasswordReset Boolean @map("is_password_reset")
+  isPasswordReset Boolean @default(true) @map("is_password_reset")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
