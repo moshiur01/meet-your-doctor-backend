@@ -1,5 +1,0 @@
-Tue Jan 02 2024 13:4:34 } [meet-your-doctor] error: 🐱‍🏍 globalErrorHandler ~~ 
-Invalid `prisma.service.update()` invocation:
-
-
-An operation failed because it depends on one or more records that were required but not found. Record to update not found.
