@@ -5,4 +5,5 @@ export const adminFilterableFields: string[] = [
   'email',
   'gender',
   'phoneNumber',
+  'role',
 ];

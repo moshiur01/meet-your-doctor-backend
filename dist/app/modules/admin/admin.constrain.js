@@ -7,4 +7,5 @@ exports.adminFilterableFields = [
     'email',
     'gender',
     'phoneNumber',
+    'role',
 ];

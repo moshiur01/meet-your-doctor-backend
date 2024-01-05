@@ -16,7 +16,7 @@ model Doctor {
   email           String  @unique
   phoneNumber     String  @unique @map("phone_number")
   gender          String
-  imageURL        String  @map("image_url")
+  imageURL        String? @default("https://png.pngtree.com/png-vector/20200408/ourlarge/pngtree-vector-design-of-young-doctor-with-stethoscope-png-image_2178293.jpg") @map("image_url")
   role            String  @default("doctor")
   password        String
   isPasswordReset Boolean @default(false) @map("is_password_reset")
