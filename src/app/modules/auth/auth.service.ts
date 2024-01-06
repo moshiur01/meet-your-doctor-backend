@@ -35,6 +35,7 @@ const loginUser = async (payload: any): Promise<any> => {
     throw new Error('Password is incorrect');
   }
   const payloadData = {
+    id: isUserExist!.id,
     email: isUserExist!.email,
     role: isUserExist!.role,
     phoneNumber: isUserExist!.phoneNumber,
@@ -60,8 +61,8 @@ const refreshToken = async (token: string) => {
   }
 
   const decodedToken = jwtHelpers.decodeToken(token);
-  const { email, role, phoneNumber, fullName, image } = decodedToken;
-  if (!email || !role || !phoneNumber || !fullName || !image) {
+  const { email, role, phoneNumber, fullName, image, id } = decodedToken;
+  if (!email || !role || !phoneNumber || !fullName || !image || !id) {
     throw new Error('Invalid token');
   }
 
@@ -82,6 +83,7 @@ const refreshToken = async (token: string) => {
     throw new Error('User does not exist');
   }
   const payloadData = {
+    id: id,
     email: email,
     role: role,
     phoneNumber: phoneNumber,

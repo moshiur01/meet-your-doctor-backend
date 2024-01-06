@@ -69,8 +69,10 @@ model Patient {
 
 model MedicalProfile {
   id               String  @id @default(uuid())
-  profilePicture   String? @map("profile_picture")
-  address          String
+  profilePicture   String? @default("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqsTI9AUMrcLm-stm3Jjaroqg-TSOc9wFFLQ&usqp=CAU") @map("profile_picture")
+  bloodGroup       String  @map("blood_group")
+  presentAddress   String  @map("preset_address")
+  permanentAddress String  @map("permanent_address")
   dateOfBirth      String  @map("date_of_birth")
   gender           String
   medicalHistory   String? @map("medical_history")

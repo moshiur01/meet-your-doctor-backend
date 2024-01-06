@@ -90,6 +90,9 @@ const getSinglePatient = async (id: string): Promise<Patient | null> => {
     where: {
       id,
     },
+    include: {
+      medicalProfile: true,
+    },
   });
 
   return result;
@@ -97,13 +100,27 @@ const getSinglePatient = async (id: string): Promise<Patient | null> => {
 
 const updatePatient = async (
   id: string,
-  payload: Partial<Patient>
-): Promise<Patient | null> => {
-  const result = await prisma.patient.update({
-    where: {
-      id,
-    },
-    data: payload,
+  payload: Partial<any>
+): Promise<any> => {
+  const { medicalProfile, ...patientData } = payload;
+  const result = await prisma.$transaction(async transactorClient => {
+    const updatePatient = await transactorClient.patient.update({
+      where: {
+        id,
+      },
+      data: patientData,
+    });
+
+    const updateMedicalProfile = await transactorClient.medicalProfile.update({
+      where: {
+        patientId: id,
+      },
+      data: medicalProfile,
+    });
+    return {
+      patient: updatePatient,
+      medical: updateMedicalProfile,
+    };
   });
 
   return result;

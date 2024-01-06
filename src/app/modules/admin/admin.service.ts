@@ -58,6 +58,7 @@ const getAllAdmin = async (
 
   const result = await prisma.admin.findMany({
     where: whereConditions,
+
     skip,
     take: limit,
     orderBy:
