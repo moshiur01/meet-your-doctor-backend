@@ -126,6 +126,18 @@ const updatePatient = async (
   return result;
 };
 
+const updatePatentPassword = async (
+  id: string,
+  payload: Partial<Patient>
+): Promise<Patient> => {
+  const result = await prisma.patient.update({
+    where: { id },
+    data: payload,
+  });
+
+  return result;
+};
+
 const deletePatient = async (id: string): Promise<any> => {
   const result = await prisma.$transaction(async transactionClient => {
     const deleteMedicalProfile = await prisma.medicalProfile.delete({
@@ -152,5 +164,6 @@ export const patientService = {
   getAllPatients,
   getSinglePatient,
   updatePatient,
+  updatePatentPassword,
   deletePatient,
 };

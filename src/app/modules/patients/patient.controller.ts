@@ -47,6 +47,7 @@ const getSinglePatient = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 const updatePatient = catchAsync(async (req: Request, res: Response) => {
   const result = await patientService.updatePatient(req?.params?.id, req?.body);
 
@@ -54,6 +55,20 @@ const updatePatient = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Patient data updated Successfully',
+    data: result,
+  });
+});
+
+const updatePatentPassword = catchAsync(async (req: Request, res: Response) => {
+  const result = await patientService.updatePatentPassword(
+    req?.params?.id,
+    req?.body
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Patient password updated Successfully',
     data: result,
   });
 });
@@ -73,6 +88,7 @@ export const patientController = {
   cratePatient,
   getAllPatients,
   getSinglePatient,
+  updatePatentPassword,
   updatePatient,
   deletePatient,
 };

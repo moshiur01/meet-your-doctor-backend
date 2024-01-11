@@ -1,7 +1,7 @@
 export const availableServiceFilterableFields: string[] = [
   'slotDate',
   'isBooked',
-  'availableDoctorId',
+  'doctorId',
   'serviceId',
   'slotId',
 ];
@@ -14,7 +14,7 @@ export const availableServiceRelationalFields: string[] = [
 
 export const availableServiceRelationalFieldsMapper: { [key: string]: string } =
   {
-    availableDoctorId: 'availableDoctor',
+    doctorId: 'doctor',
     serviceId: 'service',
     slotId: 'slot',
   };

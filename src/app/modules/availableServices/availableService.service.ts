@@ -60,31 +60,14 @@ const getAllAvailableService = async (
     include: {
       service: {
         include: {
-          specialization: {
-            include: {
-              doctor: {
-                include: {
-                  availability: true,
-                },
-              },
-            },
-          },
+          specialization: true,
         },
       },
+      doctor: true,
       appointments: {
         include: {
           patient: true,
           payment: true,
-        },
-      },
-      availableDoctor: {
-        include: {
-          doctor: {
-            include: {
-              specialization: true,
-            },
-          },
-          availableServices: true,
         },
       },
 
@@ -124,25 +107,16 @@ const getSingleAvailableService = async (
     include: {
       service: {
         include: {
-          specialization: {
-            include: {
-              doctor: {
-                include: {
-                  availability: true,
-                },
-              },
-            },
-          },
+          specialization: true,
         },
       },
+      doctor: true,
       appointments: {
         include: {
           patient: true,
           payment: true,
         },
       },
-      availableDoctor: true,
-      slot: true,
     },
   });
   return result;

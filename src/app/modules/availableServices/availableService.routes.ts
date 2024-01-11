@@ -9,7 +9,7 @@ router.post(
 );
 router.get('/', AvailableServiceController.getAllAvailableService);
 router.get('/:id', AvailableServiceController.getSingleAvailableService);
-router.patch('/:id', AvailableServiceController.getAllAvailableService);
+router.patch('/:id', AvailableServiceController.updateAvailableService);
 router.delete('/:id', AvailableServiceController.deleteAvailableService);
 
 export const availableServiceRoutes = router;
