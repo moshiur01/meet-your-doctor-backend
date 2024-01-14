@@ -1,4 +1,4 @@
-export const doctorSearchableFields: string[] = ['fullName', 'email'];
+export const doctorSearchableFields: string[] = ['name', 'email'];
 
 export const doctorFilterableFields: string[] = [
   'searchTerm',

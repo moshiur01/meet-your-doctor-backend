@@ -1,4 +1,2 @@
-export const patientSearchableFields: string[] = [
-  'fullName, email, phoneNumber',
-];
+export const patientSearchableFields: string[] = ['name, email, phoneNumber'];
 export const patientFilterableFields: string[] = ['searchTerm'];

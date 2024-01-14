@@ -10,30 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Doctor {
-  id              String  @id @default(uuid())
-  fullName        String  @map("full_name")
-  email           String  @unique
-  phoneNumber     String  @unique @map("phone_number")
-  gender          String
-  imageURL        String? @default("https://png.pngtree.com/png-vector/20200408/ourlarge/pngtree-vector-design-of-young-doctor-with-stethoscope-png-image_2178293.jpg") @map("image_url")
-  role            String  @default("doctor")
-  password        String
-  isPasswordReset Boolean @default(false) @map("is_password_reset")
-  qualification   String
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  //ref fields
-  specializationId String         @map("specialization_id")
-  specialization   Specialization @relation(fields: [specializationId], references: [id])
-
-  availableServices AvailableService[]
-
-  @@map("doctors")
-}
-
 model Specialization {
   id          String  @id @default(uuid())
   name        String
@@ -43,76 +19,34 @@ model Specialization {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   //ref fields
-  doctor  Doctor[]
-  service Service[]
+  doctor Doctor[]
+  // service Service[]
 
   @@map("specializations")
 }
 
-model Patient {
-  id          String @id @default(uuid())
-  fullName    String @map("full_name")
-  email       String @unique
-  phoneNumber String @unique @map("phone_number")
-  role        String @default("patient")
-  password    String
+model Doctor {
+  id       String  @id @default(uuid())
+  email    String  @unique
+  password String
+  name     String  @map("name")
+  phone    String? @unique @map("phone")
+  photo    String? @default("https://png.pngtree.com/png-vector/20200408/ourlarge/pngtree-vector-design-of-young-doctor-with-stethoscope-png-image_2178293.jpg") @map("image_url")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  role   String  @default("doctor")
+  gender String?
 
-  //ref fields
-  medicalProfile MedicalProfile?
-  appointment    Appointment[]
+  education  String[]
+  experience String[]
+  bio        String?
 
-  @@map("patients")
-}
+  about String?
 
-model MedicalProfile {
-  id               String  @id @default(uuid())
-  profilePicture   String? @default("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqsTI9AUMrcLm-stm3Jjaroqg-TSOc9wFFLQ&usqp=CAU") @map("profile_picture")
-  bloodGroup       String  @map("blood_group")
-  presentAddress   String  @map("preset_address")
-  permanentAddress String  @map("permanent_address")
-  dateOfBirth      String  @map("date_of_birth")
-  gender           String
-  medicalHistory   String? @map("medical_history")
-  emergencyContact String? @map("emergency_contact")
-  profileStatus    Boolean @map("profile_status")
+  avgRating Float @default(0) @map("avg_rating")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  totalRating Int @default(0) @map("total_Rating")
 
-  //ref fields
-  patientId String  @unique() @map("patient_id")
-  patient   Patient @relation(fields: [patientId], references: [id])
-
-  @@map("medical_profiles")
-}
-
-model Appointment {
-  id              String   @id @default(uuid())
-  appointmentDate DateTime @map("appointment_date")
-  status          String   @map("appointment_status")
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  //ref fields
-  patientId String  @map("patient_id")
-  patient   Patient @relation(fields: [patientId], references: [id])
-
-  availableServiceId String           @map("available_service_id")
-  availableService   AvailableService @relation(fields: [availableServiceId], references: [id])
-
-  payment Payment?
-
-  @@map("appointments")
-}
-
-model Service {
-  id          String  @id @default(uuid())
-  name        String  @unique
-  description String?
+  isPasswordReset Boolean @default(false) @map("is_password_reset")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -121,9 +55,102 @@ model Service {
   specializationId String         @map("specialization_id")
   specialization   Specialization @relation(fields: [specializationId], references: [id])
 
-  availableServices AvailableService[]
+  timeSlots TimeSlot[]
 
-  @@map("services")
+  appointments Appointment[]
+
+  @@map("doctors")
+}
+
+model TimeSlot {
+  id String @id @default(uuid())
+
+  startTime String @map("start_time")
+  EndTime   String @map("end_time")
+  day       String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  //ref fields
+  doctorId String @map("doctor_id")
+  doctor   Doctor @relation(fields: [doctorId], references: [id])
+
+  //foreign
+  doctorServices DoctorService[]
+
+  appointments Appointment[]
+
+  @@map("time_slots")
+}
+
+model DoctorService {
+  id             String  @id @default(uuid())
+  availableSeats Int     @map("available_seats")
+  isBooked       Boolean @default(false) @map("is_booked")
+  fees           String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  //ref fields
+  doctorId String @map("doctor_id")
+  // doctor   Doctor @relation(fields: [doctorId], references: [id])
+
+  slotId String   @map("slot_id")
+  slot   TimeSlot @relation(fields: [slotId], references: [id])
+
+  appointments Appointment[]
+
+  // @@unique([slotId, doctorId, slotDate, serviceId])
+  @@map("doctor_services")
+}
+
+model Patient {
+  id        String   @id @default(uuid())
+  name      String   @map("name")
+  email     String   @unique
+  password  String
+  role      String   @default("patient")
+  gender    String
+  photo     String?  @default("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2a4xxU0NG6NU0MrfhXkenFNvNMFScB1eDRokLNrMP8seq585qB4EKsddo-1_T6WDTu1g&usqp=CAU")
+  bloodType String?
+  phone     String   @unique @map("phone")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  appointment Appointment[]
+
+  @@map("patients")
+}
+
+model Appointment {
+  id              String @id @default(uuid())
+  appointmentDate String @map("appointment_date")
+  status          String @map("appointment_status")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  //ref fields
+  patientId String  @map("patient_id")
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  doctorId String @map("doctor_id")
+  doctor   Doctor @relation(fields: [doctorId], references: [id])
+
+  doctorServiceId String        @map("doctor_service_id")
+  doctorService   DoctorService @relation(fields: [doctorServiceId], references: [id])
+
+  slotId   String   @map("slot_id")
+  timeSlot TimeSlot @relation(fields: [slotId], references: [id])
+
+  //foreign
+  payment      Payment?
+  medicine     Medicine?
+  Prescription Prescription?
+
+  @@map("appointments")
 }
 
 model Payment {
@@ -142,71 +169,34 @@ model Payment {
   @@map("payments")
 }
 
-model AvailableService {
-  id             String   @id @default(uuid())
-  slotDate       DateTime @map("slot_date")
-  availableSeats Int      @map("available_seats")
-  isBooked       Boolean  @default(false) @map("is_booked")
-  fees           String
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+model Medicine {
+  id     String @id @default(uuid())
+  status String
 
   //ref fields
-  doctorId String @map("doctor_id")
-  doctor   Doctor @relation(fields: [doctorId], references: [id])
+  appointmentId String      @unique @map("appointment_id")
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
 
-  serviceId String  @map("service_id")
-  service   Service @relation(fields: [serviceId], references: [id])
-
-  slotId String   @map("slot_id")
-  slot   TimeSlot @relation(fields: [slotId], references: [id])
-
-  appointments Appointment[]
-
-  @@unique([slotId, doctorId, slotDate, serviceId])
-  @@map("available_services")
+  @@map("medicines_for_patients")
 }
 
-model TimeSlot {
-  id        String @id @default(uuid())
-  startTime String @map("start_time")
+model Prescription {
+  id   String @id @default(uuid())
+  link String
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  //ref id
+  appointmentId String      @unique @map("appointment_id")
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
 
-  //ref fields
-  availableServices AvailableService[]
-
-  @@map("time_slots")
+  @@map("patient_prescription")
 }
-
-// model AvailableDoctor {
-//   id            String   @id @default(uuid())
-//   availableDate DateTime @map("available_date")
-
-//   createdAt DateTime @default(now()) @map("created_at")
-//   updatedAt DateTime @updatedAt @map("updated_at")
-
-//   //ref fields
-//   doctorId String @map("doctor_id")
-//   doctor   Doctor @relation(fields: [doctorId], references: [id])
-
-//   slotId String   @map("slot_id")
-//   slot   TimeSlot @relation(fields: [slotId], references: [id])
-
-//   availableServices AvailableService[]
-
-//   @@unique([doctorId, slotId, availableDate])
-//   @@map("available_doctors")
-// }
 
 model Admin {
   id              String  @id @default(uuid())
   fullName        String  @map("full_name")
   email           String  @unique
   phoneNumber     String  @unique
-  image           String
+  photo           String  @default("https://www.shutterstock.com/image-vector/user-icon-vector-260nw-393536320.jpg")
   password        String
   role            String  @default("admin")
   isPasswordReset Boolean @default(true) @map("is_password_reset")

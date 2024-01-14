@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { MedicalProfile, Patient, Prisma } from '@prisma/client';
+import { Patient, Prisma } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
@@ -7,26 +7,9 @@ import prisma from '../../../shared/prisma';
 import { patientSearchableFields } from './patient.constrain';
 import { IPatientFilterRequest } from './patient.interface';
 
-const CreatePatient = async (
-  patient: Patient,
-  medicalProfile: MedicalProfile
-): Promise<any> => {
-  const result = await prisma.$transaction(async transactorClient => {
-    const createPatient = await transactorClient.patient.create({
-      data: patient,
-    });
-
-    const createMedicalProfile = await transactorClient.medicalProfile.create({
-      data: {
-        ...medicalProfile,
-        patientId: createPatient?.id,
-        profileStatus: true,
-      },
-    });
-    return {
-      patient: createPatient,
-      medical: createMedicalProfile,
-    };
+const CreatePatient = async (patient: Patient): Promise<any> => {
+  const result = await prisma.patient.create({
+    data: patient,
   });
 
   return result;
@@ -57,9 +40,7 @@ const getAllPatients = async (
 
   const result = await prisma.patient.findMany({
     where: whereConditions,
-    include: {
-      medicalProfile: true,
-    },
+
     skip,
     take: limit,
     orderBy:
@@ -90,9 +71,6 @@ const getSinglePatient = async (id: string): Promise<Patient | null> => {
     where: {
       id,
     },
-    include: {
-      medicalProfile: true,
-    },
   });
 
   return result;
@@ -100,27 +78,13 @@ const getSinglePatient = async (id: string): Promise<Patient | null> => {
 
 const updatePatient = async (
   id: string,
-  payload: Partial<any>
+  payload: Partial<Patient>
 ): Promise<any> => {
-  const { medicalProfile, ...patientData } = payload;
-  const result = await prisma.$transaction(async transactorClient => {
-    const updatePatient = await transactorClient.patient.update({
-      where: {
-        id,
-      },
-      data: patientData,
-    });
-
-    const updateMedicalProfile = await transactorClient.medicalProfile.update({
-      where: {
-        patientId: id,
-      },
-      data: medicalProfile,
-    });
-    return {
-      patient: updatePatient,
-      medical: updateMedicalProfile,
-    };
+  const result = await prisma.patient.update({
+    where: {
+      id,
+    },
+    data: payload,
   });
 
   return result;
@@ -139,23 +103,12 @@ const updatePatentPassword = async (
 };
 
 const deletePatient = async (id: string): Promise<any> => {
-  const result = await prisma.$transaction(async transactionClient => {
-    const deleteMedicalProfile = await prisma.medicalProfile.delete({
-      where: {
-        patientId: id,
-      },
-    });
-    const deletePatient = await transactionClient.patient.delete({
-      where: {
-        id,
-      },
-    });
-
-    return {
-      patient: deletePatient,
-      medicalProfile: deleteMedicalProfile,
-    };
+  const result = await prisma.patient.delete({
+    where: {
+      id,
+    },
   });
+
   return result;
 };
 

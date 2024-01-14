@@ -8,12 +8,7 @@ import { patientFilterableFields } from './patient.constrain';
 import { patientService } from './patient.service';
 
 const cratePatient = catchAsync(async (req: Request, res: Response) => {
-  const { medicalProfile, ...patientData } = req.body;
-
-  const result = await patientService.CreatePatient(
-    patientData,
-    medicalProfile
-  );
+  const result = await patientService.CreatePatient(req?.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

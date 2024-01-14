@@ -34,17 +34,17 @@ const loginUser = async (payload: any): Promise<any> => {
   if (isUserExist && isUserExist.password !== password) {
     throw new Error('Password is incorrect');
   }
+
   const payloadData = {
     id: isUserExist!.id,
     email: isUserExist!.email,
     role: isUserExist!.role,
     phoneNumber: isUserExist!.phoneNumber,
-    fullName: isUserExist!.fullName,
-    image:
-      isUserExist!.role === 'admin'
-        ? isUserExist!.image
-        : isUserExist!.imageURL,
+    name: isUserExist!.name,
+    photo: isUserExist!.photo,
   };
+
+  console.log(payloadData);
 
   //   create token
   const accessToken = jwtHelpers.createToken(
@@ -61,8 +61,8 @@ const refreshToken = async (token: string) => {
   }
 
   const decodedToken = jwtHelpers.decodeToken(token);
-  const { email, role, phoneNumber, fullName, image, id } = decodedToken;
-  if (!email || !role || !phoneNumber || !fullName || !image || !id) {
+  const { email, role, phoneNumber, name, photo, id } = decodedToken;
+  if (!email || !role || !phoneNumber || !name || !photo || !id) {
     throw new Error('Invalid token');
   }
 
@@ -87,8 +87,8 @@ const refreshToken = async (token: string) => {
     email: email,
     role: role,
     phoneNumber: phoneNumber,
-    fullName: fullName,
-    image: image,
+    name: name,
+    photo: photo,
   };
   const newAccessToken = jwtHelpers.createToken(
     payloadData,
