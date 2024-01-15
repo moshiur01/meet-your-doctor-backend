@@ -29,6 +29,7 @@ const getAllTimeSlot = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 const getSingleTimeSlot = catchAsync(async (req: Request, res: Response) => {
   const result = await timeSlotService.getSingleTimeSlot(req?.params?.id);
 
@@ -39,6 +40,21 @@ const getSingleTimeSlot = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const getSingleTimeSlotForDoctor = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await timeSlotService.getSingleTimeSlotForDoctor(
+      req?.params?.id
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Single time slot data  for doctor fetched successfully',
+      data: result,
+    });
+  }
+);
 
 const updateTimeSlot = catchAsync(async (req: Request, res: Response) => {
   const result = await timeSlotService.updateTimeSlot(
@@ -69,6 +85,7 @@ export const timeSlotController = {
   createTimeSlot,
   getAllTimeSlot,
   getSingleTimeSlot,
+  getSingleTimeSlotForDoctor,
   updateTimeSlot,
   deleteTimeSlot,
 };

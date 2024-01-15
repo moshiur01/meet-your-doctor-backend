@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TimeSlot } from '@prisma/client';
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
@@ -51,6 +52,21 @@ const getSingleTimeSlot = async (id: string): Promise<TimeSlot | null> => {
     where: {
       id,
     },
+    include: {
+      appointments: true,
+      doctor: true,
+      doctorServices: true,
+    },
+  });
+
+  return result;
+};
+
+const getSingleTimeSlotForDoctor = async (id: string): Promise<any> => {
+  const result = await prisma.timeSlot.findMany({
+    where: {
+      doctorId: id,
+    },
   });
 
   return result;
@@ -95,6 +111,7 @@ export const timeSlotService = {
   createTimeSlot,
   getAllTimeSlot,
   getSingleTimeSlot,
+  getSingleTimeSlotForDoctor,
   updateTimeSlot,
   deleteTimeSlot,
 };

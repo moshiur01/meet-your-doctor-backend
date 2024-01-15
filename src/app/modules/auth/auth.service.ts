@@ -44,7 +44,7 @@ const loginUser = async (payload: any): Promise<any> => {
     photo: isUserExist!.photo,
   };
 
-  console.log(payloadData);
+  // console.log(payloadData);
 
   //   create token
   const accessToken = jwtHelpers.createToken(

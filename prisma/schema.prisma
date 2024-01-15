@@ -99,6 +99,8 @@ model Doctor {
 
   experiences Experience[]
 
+  doctorReviews DoctorReview[]
+
   @@map("doctors")
 }
 
@@ -161,16 +163,18 @@ model Patient {
 
   appointment Appointment[]
 
+  doctorReviewGiven DoctorReview[]
+
   @@map("patients")
 }
 
 model Appointment {
-  id              String @id @default(uuid())
-  appointmentDate String @map("appointment_date")
-  status          String @map("appointment_status")
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id               String   @id @default(uuid())
+  appointmentDate  String   @map("appointment_date")
+  status           String   @map("appointment_status")
+  prescriptionLink String?  @map("prescription_link")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
 
   //ref fields
   patientId String  @map("patient_id")
@@ -186,9 +190,8 @@ model Appointment {
   timeSlot TimeSlot @relation(fields: [slotId], references: [id])
 
   //foreign
-  payment      Payment?
-  medicine     Medicine?
-  Prescription Prescription?
+  payment  Payment?
+  medicine Medicine?
 
   @@map("appointments")
 }
@@ -220,15 +223,29 @@ model Medicine {
   @@map("medicines_for_patients")
 }
 
-model Prescription {
-  id   String @id @default(uuid())
-  link String
+// model Prescription {
+//   id   String @id @default(uuid())
+//   link String
 
-  //ref id
-  appointmentId String      @unique @map("appointment_id")
-  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+//   //ref id
+//   appointmentId String      @unique @map("appointment_id")
+//   appointment   Appointment @relation(fields: [appointmentId], references: [id])
 
-  @@map("patient_prescription")
+//   @@map("patient_prescription")
+// }
+
+model DoctorReview {
+  id String @id @default(uuid())
+
+  reviewText String
+  rating     Int
+
+  doctorId String
+  doctor   Doctor @relation(fields: [doctorId], references: [id])
+
+  patientId String
+
+  patient Patient @relation(fields: [patientId], references: [id])
 }
 
 model Admin {

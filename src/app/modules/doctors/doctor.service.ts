@@ -111,6 +111,11 @@ const getSingleDoctor = async (id: string): Promise<Doctor | null> => {
     },
     include: {
       specialization: true,
+      appointments: true,
+      doctorReviews: true,
+      educations: true,
+      experiences: true,
+      timeSlots: true,
     },
   });
   return result;
