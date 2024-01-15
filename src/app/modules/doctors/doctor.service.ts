@@ -11,7 +11,7 @@ import {
 } from './doctor.constrain';
 import { IDoctorFilterRequest } from './doctor.interface';
 
-const createDoctor = async (data: Doctor): Promise<Doctor> => {
+const createDoctor = async (data: Doctor): Promise<any> => {
   const result = prisma.doctor.create({
     data,
     include: {
@@ -83,6 +83,10 @@ const getAllDoctor = async (
           },
     include: {
       specialization: true,
+      educations: true,
+      experiences: true,
+      appointments: true,
+      timeSlots: true,
     },
   });
 

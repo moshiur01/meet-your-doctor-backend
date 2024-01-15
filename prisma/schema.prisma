@@ -25,6 +25,44 @@ model Specialization {
   @@map("specializations")
 }
 
+model Education {
+  id String @id @default(uuid())
+
+  from String
+  to   String
+
+  degreeName     String @map("degree_name")
+  universityName String @map("university_name")
+
+  doctorId String
+
+  doctor Doctor @relation(fields: [doctorId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("educations")
+}
+
+model Experience {
+  id String @id @default(uuid())
+
+  from String
+  to   String
+
+  designation   String
+  WorkPlaceName String @map("work_place_name")
+
+  doctorId String
+
+  doctor Doctor @relation(fields: [doctorId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("experiences")
+}
+
 model Doctor {
   id       String  @id @default(uuid())
   email    String  @unique
@@ -36,9 +74,7 @@ model Doctor {
   role   String  @default("doctor")
   gender String?
 
-  education  String[]
-  experience String[]
-  bio        String?
+  bio String?
 
   about String?
 
@@ -58,6 +94,10 @@ model Doctor {
   timeSlots TimeSlot[]
 
   appointments Appointment[]
+
+  educations Education[]
+
+  experiences Experience[]
 
   @@map("doctors")
 }
