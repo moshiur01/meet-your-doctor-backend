@@ -14,48 +14,50 @@ import {
 
 const bookAppointment = async (
   patientId: string,
-  availableServiceId: string,
-  appointmentDate: string
+  doctorServiceId: string,
+  doctorId: string,
+  slotId: string
 ): Promise<any> => {
   //check the availableService
-  const availableService = await prisma.availableService.findUnique({
+  const doctorService = await prisma.doctorService.findUnique({
     where: {
-      id: availableServiceId,
+      id: doctorServiceId,
     },
   });
 
-  if (!availableService) {
+  if (!doctorService) {
     throw new ApiError(httpStatus.NOT_FOUND, 'This service is not found');
   }
 
-  if (availableService.availableSeats === 0) {
+  if (doctorService.availableSeats === 0) {
     throw new ApiError(httpStatus.FORBIDDEN, 'This service is fully booked');
   }
 
   const booking = await prisma.$transaction(async transactionClient => {
     const appointment = await transactionClient.appointment.create({
       data: {
-        appointmentDate,
+        doctorServiceId,
         patientId,
-        availableServiceId,
+        doctorId,
+        slotId,
         status: 'pending',
       },
     });
 
-    await transactionClient.availableService.update({
+    await transactionClient.doctorService.update({
       where: {
-        id: availableServiceId,
+        id: doctorServiceId,
       },
 
       data: {
-        availableSeats: availableService.availableSeats - 1,
-        isBooked: availableService.availableSeats - 1 === 0 ? true : false,
+        availableSeats: doctorService.availableSeats - 1,
+        isBooked: doctorService.availableSeats - 1 === 0 ? true : false,
       },
     });
 
     const payment = await transactionClient.payment.create({
       data: {
-        amount: availableService.fees,
+        amount: doctorService.fees,
         paymentStatus: 'pending',
         appointmentId: appointment.id,
       },
@@ -106,16 +108,17 @@ const canceledAppointment = async (appointmentId: string): Promise<any> => {
         },
       });
 
-      const availableService =
-        await transactionClient.availableService.findUnique({
+      const availableService = await transactionClient.doctorService.findUnique(
+        {
           where: {
-            id: appointment.availableServiceId,
+            id: appointment.doctorServiceId,
           },
-        });
+        }
+      );
 
-      await transactionClient.availableService.update({
+      await transactionClient.doctorService.update({
         where: {
-          id: appointment.availableServiceId,
+          id: appointment.doctorServiceId,
         },
         data: {
           availableSeats: {
@@ -237,9 +240,9 @@ const getAllAppointment = async (
   const result = await prisma.appointment.findMany({
     where: whereConditions,
     include: {
-      availableService: {
-        include: { doctor: true, service: true, slot: true },
-      },
+      doctor: true,
+      medicine: true,
+      payment: true,
       patient: true,
     },
     skip,
@@ -275,7 +278,9 @@ const getSingleAppointment = async (
       id: id,
     },
     include: {
-      availableService: true,
+      doctor: true,
+      medicine: true,
+      payment: true,
       patient: true,
     },
   });

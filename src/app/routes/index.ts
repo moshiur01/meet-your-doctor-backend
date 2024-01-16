@@ -4,6 +4,7 @@ import { appointmentRoutes } from '../modules/appointments/appointment.routes';
 import { authRoutes } from '../modules/auth/auth.route';
 import { availableDoctorRoutes } from '../modules/availableDoctors/availableDoctor.routes';
 import { availableServiceRoutes } from '../modules/availableServices/availableService.routes';
+import { DoctorServiceRoutes } from '../modules/doctorService/doctorService.routes';
 import { doctorRoutes } from '../modules/doctors/doctor.routes';
 import { MedicalProfileRoutes } from '../modules/medicalProfiles/medicalProfile.routes';
 import { PatientRoutes } from '../modules/patients/patient.routes';
@@ -39,6 +40,10 @@ const moduleRoutes = [
   {
     path: '/available-services',
     route: availableServiceRoutes,
+  },
+  {
+    path: '/doctor-services',
+    route: DoctorServiceRoutes,
   },
   {
     path: '/services',

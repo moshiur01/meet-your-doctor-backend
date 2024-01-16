@@ -8,11 +8,12 @@ import { appointmentService } from './appointment.service';
 import { appointmentFilterableFields } from './appointments.constrain';
 
 const bookAppointment = catchAsync(async (req: Request, res: Response) => {
-  const { patientId, availableServiceId, appointmentDate } = req?.body;
+  const { patientId, doctorServiceId, doctorId, slotId } = req?.body;
   const result = await appointmentService.bookAppointment(
     patientId,
-    availableServiceId,
-    appointmentDate
+    doctorServiceId,
+    doctorId,
+    slotId
   );
 
   sendResponse(res, {

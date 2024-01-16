@@ -101,6 +101,8 @@ model Doctor {
 
   doctorReviews DoctorReview[]
 
+  doctorServices DoctorService[]
+
   @@map("doctors")
 }
 
@@ -137,7 +139,7 @@ model DoctorService {
 
   //ref fields
   doctorId String @map("doctor_id")
-  // doctor   Doctor @relation(fields: [doctorId], references: [id])
+  doctor   Doctor @relation(fields: [doctorId], references: [id])
 
   slotId String   @map("slot_id")
   slot   TimeSlot @relation(fields: [slotId], references: [id])
@@ -170,7 +172,6 @@ model Patient {
 
 model Appointment {
   id               String   @id @default(uuid())
-  appointmentDate  String   @map("appointment_date")
   status           String   @map("appointment_status")
   prescriptionLink String?  @map("prescription_link")
   createdAt        DateTime @default(now()) @map("created_at")
