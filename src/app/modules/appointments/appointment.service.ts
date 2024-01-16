@@ -63,9 +63,17 @@ const bookAppointment = async (
       },
     });
 
+    const medicineStatus = await transactionClient.medicine.create({
+      data: {
+        status: 'pending',
+        appointmentId: appointment.id,
+      },
+    });
+
     return {
       appointment: appointment,
       payment: payment,
+      medicineStatus: medicineStatus,
     };
   });
 
@@ -177,6 +185,15 @@ const finishAppointment = async (appointmentId: string): Promise<any> => {
         },
       });
 
+      await transactionClient.medicine.update({
+        where: {
+          appointmentId,
+        },
+        data: {
+          status: 'pending',
+        },
+      });
+
       const appointmentToFinish = await transactionClient.appointment.update({
         where: {
           id: appointmentId,
@@ -282,6 +299,27 @@ const getSingleAppointment = async (
       medicine: true,
       payment: true,
       patient: true,
+      timeSlot: true,
+      doctorService: true,
+    },
+  });
+  return result;
+};
+
+const getAllAppointmentsByPatients = async (
+  id: string
+): Promise<Appointment[] | null> => {
+  const result = await prisma.appointment.findMany({
+    where: {
+      patientId: id,
+    },
+    include: {
+      doctor: true,
+      medicine: true,
+      payment: true,
+      patient: true,
+      timeSlot: true,
+      doctorService: true,
     },
   });
   return result;
@@ -314,6 +352,7 @@ export const appointmentService = {
   canceledAppointment,
   getAllAppointment,
   getSingleAppointment,
+  getAllAppointmentsByPatients,
   updateAppointment,
   deleteAppointment,
   finishAppointment,

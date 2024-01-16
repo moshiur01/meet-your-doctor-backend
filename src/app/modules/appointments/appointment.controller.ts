@@ -71,6 +71,21 @@ const getSingleAppointment = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAllAppointmentsByPatients = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await appointmentService.getAllAppointmentsByPatients(
+      req?.params?.id
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Single patient appointment data fetched Successfully',
+      data: result,
+    });
+  }
+);
+
 const updateAppointment = catchAsync(async (req: Request, res: Response) => {
   const result = await appointmentService.updateAppointment(
     req?.params?.id,
@@ -101,6 +116,7 @@ export const appointmentController = {
   canceledAppointment,
   getAllAppointment,
   getSingleAppointment,
+  getAllAppointmentsByPatients,
   updateAppointment,
   deleteAppointment,
   finishAppointment,
