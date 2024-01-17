@@ -86,6 +86,21 @@ const getAllAppointmentsByPatients = catchAsync(
   }
 );
 
+const getAllAppointmentsByDoctors = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await appointmentService.getAllAppointmentsByDoctors(
+      req?.params?.id
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Single Doctor appointment data fetched Successfully',
+      data: result,
+    });
+  }
+);
+
 const updateAppointment = catchAsync(async (req: Request, res: Response) => {
   const result = await appointmentService.updateAppointment(
     req?.params?.id,
@@ -117,6 +132,7 @@ export const appointmentController = {
   getAllAppointment,
   getSingleAppointment,
   getAllAppointmentsByPatients,
+  getAllAppointmentsByDoctors,
   updateAppointment,
   deleteAppointment,
   finishAppointment,

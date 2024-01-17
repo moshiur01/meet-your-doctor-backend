@@ -18,6 +18,8 @@ router.get('/', appointmentController.getAllAppointment);
 
 router.get('/patient/:id', appointmentController.getAllAppointmentsByPatients);
 
+router.get('/doctor/:id', appointmentController.getAllAppointmentsByDoctors);
+
 router.get('/:id', appointmentController.getSingleAppointment);
 router.patch('/:id', appointmentController.updateAppointment);
 router.delete('/:id', appointmentController.deleteAppointment);

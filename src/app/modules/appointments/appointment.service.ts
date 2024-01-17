@@ -149,6 +149,15 @@ const canceledAppointment = async (appointmentId: string): Promise<any> => {
         },
       });
 
+      await transactionClient.medicine.update({
+        where: {
+          appointmentId,
+        },
+        data: {
+          status: 'canceled',
+        },
+      });
+
       return {
         appointment: appointmentToCancel,
       };
@@ -325,6 +334,25 @@ const getAllAppointmentsByPatients = async (
   return result;
 };
 
+const getAllAppointmentsByDoctors = async (
+  id: string
+): Promise<Appointment[] | null> => {
+  const result = await prisma.appointment.findMany({
+    where: {
+      doctorId: id,
+    },
+    include: {
+      doctor: true,
+      medicine: true,
+      payment: true,
+      patient: true,
+      timeSlot: true,
+      doctorService: true,
+    },
+  });
+  return result;
+};
+
 const updateAppointment = async (
   id: string,
   appointment: Appointment
@@ -353,6 +381,7 @@ export const appointmentService = {
   getAllAppointment,
   getSingleAppointment,
   getAllAppointmentsByPatients,
+  getAllAppointmentsByDoctors,
   updateAppointment,
   deleteAppointment,
   finishAppointment,
