@@ -9,6 +9,7 @@ import { doctorRoutes } from '../modules/doctors/doctor.routes';
 import { MedicalProfileRoutes } from '../modules/medicalProfiles/medicalProfile.routes';
 import { PatientRoutes } from '../modules/patients/patient.routes';
 import { paymentRoutes } from '../modules/payment/payment.routes';
+import { doctorReviewRoutes } from '../modules/reviews/review.routes';
 import { servicesRoutes } from '../modules/services/service.routes';
 import { specializationRoutes } from '../modules/specializations/specialization.routes';
 import { timeSlotRoutes } from '../modules/timeSlot/timeSlot.routes';
@@ -44,6 +45,10 @@ const moduleRoutes = [
   {
     path: '/doctor-services',
     route: DoctorServiceRoutes,
+  },
+  {
+    path: '/doctor-reviews',
+    route: doctorReviewRoutes,
   },
   {
     path: '/services',
