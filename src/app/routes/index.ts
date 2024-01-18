@@ -4,6 +4,8 @@ import { appointmentRoutes } from '../modules/appointments/appointment.routes';
 import { authRoutes } from '../modules/auth/auth.route';
 import { availableDoctorRoutes } from '../modules/availableDoctors/availableDoctor.routes';
 import { availableServiceRoutes } from '../modules/availableServices/availableService.routes';
+import { doctorEducationRoutes } from '../modules/doctorEducation/doctorEducation.routes';
+import { doctorExperienceRoutes } from '../modules/doctorExperience/doctorExperience.routes';
 import { DoctorServiceRoutes } from '../modules/doctorService/doctorService.routes';
 import { doctorRoutes } from '../modules/doctors/doctor.routes';
 import { MedicalProfileRoutes } from '../modules/medicalProfiles/medicalProfile.routes';
@@ -25,6 +27,14 @@ const moduleRoutes = [
   {
     path: '/doctors',
     route: doctorRoutes,
+  },
+  {
+    path: '/doctor-educations',
+    route: doctorEducationRoutes,
+  },
+  {
+    path: '/doctor-experiences',
+    route: doctorExperienceRoutes,
   },
   {
     path: '/patients',

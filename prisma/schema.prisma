@@ -146,7 +146,7 @@ model DoctorService {
 
   appointments Appointment[]
 
-  // @@unique([slotId, doctorId, slotDate, serviceId])
+  @@unique([slotId])
   @@map("doctor_services")
 }
 

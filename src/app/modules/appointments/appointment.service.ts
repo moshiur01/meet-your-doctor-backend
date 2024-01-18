@@ -330,6 +330,9 @@ const getAllAppointmentsByPatients = async (
       timeSlot: true,
       doctorService: true,
     },
+    orderBy: {
+      updatedAt: 'desc',
+    },
   });
   return result;
 };
@@ -349,13 +352,16 @@ const getAllAppointmentsByDoctors = async (
       timeSlot: true,
       doctorService: true,
     },
+    orderBy: {
+      updatedAt: 'desc',
+    },
   });
   return result;
 };
 
 const updateAppointment = async (
   id: string,
-  appointment: Appointment
+  appointment: Partial<Appointment>
 ): Promise<Appointment> => {
   const result = await prisma.appointment.update({
     where: {

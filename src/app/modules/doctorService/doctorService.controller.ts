@@ -45,8 +45,49 @@ const getSingleDoctorService = catchAsync(
   }
 );
 
+const getOnlySingleDoctorService = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await DocService.getOnlySingleDoctorService(req?.params?.id);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Single Doctor specific service data fetched successfully',
+      data: result,
+    });
+  }
+);
+
+const updateDoctorService = catchAsync(async (req: Request, res: Response) => {
+  const result = await DocService.updateDoctorService(
+    req?.params?.id,
+    req?.body
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Single Doctor service data updated successfully',
+    data: result,
+  });
+});
+
+const deleteDoctorService = catchAsync(async (req: Request, res: Response) => {
+  const result = await DocService.deleteDoctorService(req?.params?.id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Single Doctor service data deleted successfully',
+    data: result,
+  });
+});
+
 export const DocServiceController = {
   createDoctorService,
   getAllDoctorService,
   getSingleDoctorService,
+  updateDoctorService,
+  deleteDoctorService,
+  getOnlySingleDoctorService,
 };

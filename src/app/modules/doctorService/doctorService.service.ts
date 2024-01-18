@@ -100,8 +100,49 @@ const getSingleDoctorService = async (
   return result;
 };
 
+const getOnlySingleDoctorService = async (
+  id: string
+): Promise<DoctorService | null> => {
+  const result = await prisma.doctorService.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      doctor: true,
+      appointments: true,
+      slot: true,
+    },
+  });
+  return result;
+};
+
+const updateDoctorService = async (
+  id: string,
+  doctorService: Partial<DoctorService>
+): Promise<DoctorService> => {
+  const result = await prisma.doctorService.update({
+    where: {
+      id: id,
+    },
+    data: doctorService,
+  });
+  return result;
+};
+
+const deleteDoctorService = async (id: string): Promise<DoctorService> => {
+  const result = await prisma.doctorService.delete({
+    where: {
+      id: id,
+    },
+  });
+  return result;
+};
+
 export const DocService = {
   createDoctorService,
   getAllDoctorService,
+  getOnlySingleDoctorService,
   getSingleDoctorService,
+  updateDoctorService,
+  deleteDoctorService,
 };
