@@ -8,7 +8,8 @@ import { doctorEducationRoutes } from '../modules/doctorEducation/doctorEducatio
 import { doctorExperienceRoutes } from '../modules/doctorExperience/doctorExperience.routes';
 import { DoctorServiceRoutes } from '../modules/doctorService/doctorService.routes';
 import { doctorRoutes } from '../modules/doctors/doctor.routes';
-import { MedicalProfileRoutes } from '../modules/medicalProfiles/medicalProfile.routes';
+import { medicineRoutes } from '../modules/medicine/medicine.routes';
+import { medicineManRoutes } from '../modules/medicineMan/medicineMan.routes';
 import { PatientRoutes } from '../modules/patients/patient.routes';
 import { paymentRoutes } from '../modules/payment/payment.routes';
 import { doctorReviewRoutes } from '../modules/reviews/review.routes';
@@ -41,8 +42,12 @@ const moduleRoutes = [
     route: PatientRoutes,
   },
   {
-    path: '/medical-profiles',
-    route: MedicalProfileRoutes,
+    path: '/medicines',
+    route: medicineRoutes,
+  },
+  {
+    path: '/medicine-mans',
+    route: medicineManRoutes,
   },
   {
     path: '/appointments',

@@ -221,6 +221,9 @@ model Medicine {
   appointmentId String      @unique @map("appointment_id")
   appointment   Appointment @relation(fields: [appointmentId], references: [id])
 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
   @@map("medicines_for_patients")
 }
 
@@ -247,11 +250,29 @@ model DoctorReview {
   patientId String
 
   patient Patient @relation(fields: [patientId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model MedicineMan {
+  id          String @id @default(uuid())
+  name        String
+  email       String @unique
+  phoneNumber String @unique
+  photo       String @default("https://i.pinimg.com/originals/bf/12/c0/bf12c05be7f73150f05115653979c510.png")
+  password    String
+  role        String @default("medicineMan")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("medicine_mans")
 }
 
 model Admin {
   id              String  @id @default(uuid())
-  fullName        String  @map("full_name")
+  name            String
   email           String  @unique
   phoneNumber     String  @unique
   photo           String  @default("https://www.shutterstock.com/image-vector/user-icon-vector-260nw-393536320.jpg")

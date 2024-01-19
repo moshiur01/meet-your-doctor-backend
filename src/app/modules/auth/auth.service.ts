@@ -23,12 +23,16 @@ const loginUser = async (payload: any): Promise<any> => {
     where: { email },
   });
 
-  if (!admin && !patient && !doctor) {
+  const medicineMan = await prisma.medicineMan.findUnique({
+    where: { email },
+  });
+
+  if (!admin && !patient && !doctor && !medicineMan) {
     throw new Error('User does not exist');
   }
 
-  if (admin || patient || doctor) {
-    isUserExist = admin || patient || doctor;
+  if (admin || patient || doctor || medicineMan) {
+    isUserExist = admin || patient || doctor || medicineMan;
   }
 
   if (isUserExist && isUserExist.password !== password) {
@@ -79,7 +83,11 @@ const refreshToken = async (token: string) => {
     where: { email },
   });
 
-  if (!admin && !patient && !doctor) {
+  const medicineMan = await prisma.medicineMan.findUnique({
+    where: { email },
+  });
+
+  if (!admin && !patient && !doctor && !medicineMan) {
     throw new Error('User does not exist');
   }
   const payloadData = {
