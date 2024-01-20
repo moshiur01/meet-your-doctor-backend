@@ -12,6 +12,7 @@ import { medicineRoutes } from '../modules/medicine/medicine.routes';
 import { medicineManRoutes } from '../modules/medicineMan/medicineMan.routes';
 import { PatientRoutes } from '../modules/patients/patient.routes';
 import { paymentRoutes } from '../modules/payment/payment.routes';
+import { PlatformReviewRoutes } from '../modules/platformReview/platformReview.routes';
 import { doctorReviewRoutes } from '../modules/reviews/review.routes';
 import { servicesRoutes } from '../modules/services/service.routes';
 import { specializationRoutes } from '../modules/specializations/specialization.routes';
@@ -64,6 +65,10 @@ const moduleRoutes = [
   {
     path: '/doctor-reviews',
     route: doctorReviewRoutes,
+  },
+  {
+    path: '/platform-reviews',
+    route: PlatformReviewRoutes,
   },
   {
     path: '/services',

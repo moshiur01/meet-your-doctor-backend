@@ -227,16 +227,18 @@ model Medicine {
   @@map("medicines_for_patients")
 }
 
-// model Prescription {
-//   id   String @id @default(uuid())
-//   link String
+model PlatformReview {
+  id         String @id @default(uuid())
+  userName   String @map("user_name")
+  rating     Int
+  reviewText String
+  userImg    String @map("user_img")
 
-//   //ref id
-//   appointmentId String      @unique @map("appointment_id")
-//   appointment   Appointment @relation(fields: [appointmentId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-//   @@map("patient_prescription")
-// }
+  @@map("platform_review")
+}
 
 model DoctorReview {
   id String @id @default(uuid())

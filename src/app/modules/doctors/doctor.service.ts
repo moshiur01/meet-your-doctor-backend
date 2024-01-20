@@ -27,7 +27,7 @@ const getAllDoctor = async (
 ): Promise<IGenericResponse<Doctor[] | null>> => {
   const { limit, page, skip } = paginationHelpers.calculatePagination(options);
 
-  console.log(skip);
+  // console.log(skip);
 
   const { searchTerm, ...filterData } = filters;
 
