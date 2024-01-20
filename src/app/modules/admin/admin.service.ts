@@ -22,7 +22,7 @@ const getAllAdmin = async (
 ): Promise<IGenericResponse<Admin[] | null>> => {
   const { limit, page, skip } = paginationHelpers.calculatePagination(options);
 
-  console.log(skip);
+  // console.log(skip);
 
   const { searchTerm, ...filterData } = filters;
 

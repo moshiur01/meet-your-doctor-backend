@@ -1,3 +1,3 @@
 export type IPatientFilterRequest = {
-  searchTerm?: 'string' | undefined;
+  searchTerm?: string | undefined;
 };

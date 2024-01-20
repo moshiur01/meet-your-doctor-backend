@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Patient, Prisma } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
@@ -23,12 +24,14 @@ const getAllPatients = async (
 
   const andConditions = [];
 
+  const { searchTerm } = filters;
+
   //*partial match
-  if (filters.searchTerm) {
+  if (searchTerm) {
     andConditions.push({
       OR: patientSearchableFields.map(field => ({
         [field]: {
-          contains: filters.searchTerm,
+          contains: searchTerm,
           mode: 'insensitive',
         },
       })),
@@ -40,6 +43,9 @@ const getAllPatients = async (
 
   const result = await prisma.patient.findMany({
     where: whereConditions,
+    include: {
+      appointment: true,
+    },
 
     skip,
     take: limit,
