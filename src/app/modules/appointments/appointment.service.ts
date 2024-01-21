@@ -266,7 +266,11 @@ const getAllAppointment = async (
   const result = await prisma.appointment.findMany({
     where: whereConditions,
     include: {
-      doctor: true,
+      doctor: {
+        include: {
+          specialization: true,
+        },
+      },
       medicine: true,
       payment: true,
       patient: true,

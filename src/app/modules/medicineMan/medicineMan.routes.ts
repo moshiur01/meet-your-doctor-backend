@@ -10,4 +10,6 @@ router.get('/:id', medicineManController.getSingleMedicineMan);
 
 router.patch('/:id', medicineManController.updateMedicineMan);
 
+router.delete('/:id', medicineManController.deleteMedicineMan);
+
 export const medicineManRoutes = router;

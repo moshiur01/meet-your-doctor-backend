@@ -1,8 +1,11 @@
-import { MedicineMan } from '@prisma/client';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { MedicineMan, Prisma } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
+import { medicineManSearchableFields } from './medicinMan.constrain';
+import { IMedicineManFilterRequest } from './medicineMan.interface';
 
 const createMedicineMan = async (data: MedicineMan): Promise<MedicineMan> => {
   const result = prisma.medicineMan.create({
@@ -12,12 +15,45 @@ const createMedicineMan = async (data: MedicineMan): Promise<MedicineMan> => {
 };
 
 const getAllMedicineMan = async (
-  options: IPaginationOptions
+  options: IPaginationOptions,
+  filters: IMedicineManFilterRequest
 ): Promise<IGenericResponse<MedicineMan[]>> => {
   const { limit, page, skip } = paginationHelpers.calculatePagination(options);
 
+  const { searchTerm, ...filterData } = filters;
+
+  const andConditions = [];
+
+  //*partial match
+  if (searchTerm) {
+    andConditions.push({
+      OR: medicineManSearchableFields.map(field => ({
+        [field]: {
+          contains: searchTerm,
+          mode: 'insensitive',
+        },
+      })),
+    });
+  }
+
+  //*exact match
+  if (Object.keys(filterData).length > 0) {
+    andConditions.push({
+      AND: Object.keys(filterData).map(key => {
+        return {
+          [key]: {
+            equals: (filterData as any)[key],
+          },
+        };
+      }),
+    });
+  }
+
+  const whereConditions: Prisma.MedicineManWhereInput =
+    andConditions.length > 0 ? { AND: andConditions } : {};
+
   const result = await prisma.medicineMan.findMany({
-    where: {},
+    where: whereConditions,
 
     skip,
     take: limit,
@@ -31,7 +67,7 @@ const getAllMedicineMan = async (
           },
   });
   const total = await prisma.medicineMan.count({
-    where: {},
+    where: whereConditions,
   });
 
   return {
@@ -70,9 +106,20 @@ const updateMedicineMan = async (
   return result;
 };
 
+const deleteMedicineMan = async (id: string): Promise<MedicineMan> => {
+  const result = await prisma.medicineMan.delete({
+    where: {
+      id,
+    },
+  });
+
+  return result;
+};
+
 export const medicineManServices = {
   createMedicineMan,
   getAllMedicineMan,
   getSingleMedicineMan,
   updateMedicineMan,
+  deleteMedicineMan,
 };

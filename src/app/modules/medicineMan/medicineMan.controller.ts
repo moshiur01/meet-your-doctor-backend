@@ -4,6 +4,7 @@ import { paginationFields } from '../../../constants/pagination';
 import catchAsync from '../../../shared/catchAsync';
 import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
+import { medicineManFilterableFields } from './medicinMan.constrain';
 import { medicineManServices } from './medicineMan.service';
 
 const createMedicineMan = catchAsync(async (req: Request, res: Response) => {
@@ -19,8 +20,9 @@ const createMedicineMan = catchAsync(async (req: Request, res: Response) => {
 
 const getAllMedicineMan = catchAsync(async (req: Request, res: Response) => {
   const options = pick(req.query, paginationFields);
+  const filters = pick(req.query, medicineManFilterableFields);
 
-  const result = await medicineManServices.getAllMedicineMan(options);
+  const result = await medicineManServices.getAllMedicineMan(options, filters);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -57,9 +59,21 @@ const updateMedicineMan = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteMedicineMan = catchAsync(async (req: Request, res: Response) => {
+  const result = await medicineManServices.deleteMedicineMan(req?.params?.id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Medicine man data deleted Successfully',
+    data: result,
+  });
+});
+
 export const medicineManController = {
   createMedicineMan,
   getAllMedicineMan,
   getSingleMedicineMan,
   updateMedicineMan,
+  deleteMedicineMan,
 };

@@ -53,10 +53,9 @@ const getAllPayment = async (
       appointment: {
         include: {
           patient: true,
-          availableService: {
+          doctor: {
             include: {
-              doctor: true,
-              service: true,
+              specialization: true,
             },
           },
         },
