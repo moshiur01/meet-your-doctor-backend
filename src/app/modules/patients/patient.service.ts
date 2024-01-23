@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Patient, Prisma } from '@prisma/client';
+import httpStatus from 'http-status';
+import ApiError from '../../../errors/ApiError';
+import checkPassword from '../../../helpers/checkPassword';
+import hashPassword from '../../../helpers/hashPassword';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
@@ -9,8 +13,16 @@ import { patientSearchableFields } from './patient.constrain';
 import { IPatientFilterRequest } from './patient.interface';
 
 const CreatePatient = async (patient: Patient): Promise<any> => {
+  const { password, ...restData } = patient;
+
+  //hash password
+  const newPassword = await hashPassword(password);
+
   const result = await prisma.patient.create({
-    data: patient,
+    data: {
+      ...restData,
+      password: newPassword,
+    },
   });
 
   return result;
@@ -98,11 +110,25 @@ const updatePatient = async (
 
 const updatePatentPassword = async (
   id: string,
-  payload: Partial<Patient>
+  payload: Partial<any>
 ): Promise<Patient> => {
+  const { oldPassword, newPassword } = payload;
+
+  const patientData = await getSinglePatient(id);
+
+  if (patientData) {
+    if (!(await checkPassword(oldPassword, patientData?.password))) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
+    }
+  }
+
+  const hashedPassword = await hashPassword(newPassword);
+
   const result = await prisma.patient.update({
     where: { id },
-    data: payload,
+    data: {
+      password: hashedPassword,
+    },
   });
 
   return result;

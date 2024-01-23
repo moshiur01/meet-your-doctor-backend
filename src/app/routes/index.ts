@@ -2,8 +2,7 @@ import express from 'express';
 import { AdminRoutes } from '../modules/admin/admin.routes';
 import { appointmentRoutes } from '../modules/appointments/appointment.routes';
 import { authRoutes } from '../modules/auth/auth.route';
-import { availableDoctorRoutes } from '../modules/availableDoctors/availableDoctor.routes';
-import { availableServiceRoutes } from '../modules/availableServices/availableService.routes';
+
 import { doctorEducationRoutes } from '../modules/doctorEducation/doctorEducation.routes';
 import { doctorExperienceRoutes } from '../modules/doctorExperience/doctorExperience.routes';
 import { DoctorServiceRoutes } from '../modules/doctorService/doctorService.routes';
@@ -14,7 +13,6 @@ import { PatientRoutes } from '../modules/patients/patient.routes';
 import { paymentRoutes } from '../modules/payment/payment.routes';
 import { PlatformReviewRoutes } from '../modules/platformReview/platformReview.routes';
 import { doctorReviewRoutes } from '../modules/reviews/review.routes';
-import { servicesRoutes } from '../modules/services/service.routes';
 import { specializationRoutes } from '../modules/specializations/specialization.routes';
 import { timeSlotRoutes } from '../modules/timeSlot/timeSlot.routes';
 
@@ -54,10 +52,7 @@ const moduleRoutes = [
     path: '/appointments',
     route: appointmentRoutes,
   },
-  {
-    path: '/available-services',
-    route: availableServiceRoutes,
-  },
+
   {
     path: '/doctor-services',
     route: DoctorServiceRoutes,
@@ -70,18 +65,12 @@ const moduleRoutes = [
     path: '/platform-reviews',
     route: PlatformReviewRoutes,
   },
-  {
-    path: '/services',
-    route: servicesRoutes,
-  },
+
   {
     path: '/time-slots',
     route: timeSlotRoutes,
   },
-  {
-    path: '/available-doctors',
-    route: availableDoctorRoutes,
-  },
+
   {
     path: '/payments',
     route: paymentRoutes,

@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import httpStatus from 'http-status';
 import { Secret } from 'jsonwebtoken';
 import config from '../../../config';
+import ApiError from '../../../errors/ApiError';
+import checkPassword from '../../../helpers/checkPassword';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import prisma from '../../../shared/prisma';
 
@@ -35,8 +38,21 @@ const loginUser = async (payload: any): Promise<any> => {
     isUserExist = admin || patient || doctor || medicineMan;
   }
 
-  if (isUserExist && isUserExist.password !== password) {
-    throw new Error('Password is incorrect');
+  // const checkPasswordStatus = await checkPassword(
+  //   isUserExist?.password,
+  //   password
+  // );
+
+  // console.log(checkPassword);
+  // if (isUserExist && checkPasswordStatus === false) {
+  //   throw new ApiError(httpStatus.NOT_FOUND, 'Password is incorrect');
+  // }
+
+  if (
+    isUserExist.password &&
+    !(await checkPassword(password, isUserExist.password))
+  ) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
   }
 
   const payloadData = {
