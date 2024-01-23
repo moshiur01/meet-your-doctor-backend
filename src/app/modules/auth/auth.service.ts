@@ -6,6 +6,7 @@ import { Secret } from 'jsonwebtoken';
 import config from '../../../config';
 import ApiError from '../../../errors/ApiError';
 import checkPassword from '../../../helpers/checkPassword';
+import hashPassword from '../../../helpers/hashPassword';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import prisma from '../../../shared/prisma';
 
@@ -37,16 +38,6 @@ const loginUser = async (payload: any): Promise<any> => {
   if (admin || patient || doctor || medicineMan) {
     isUserExist = admin || patient || doctor || medicineMan;
   }
-
-  // const checkPasswordStatus = await checkPassword(
-  //   isUserExist?.password,
-  //   password
-  // );
-
-  // console.log(checkPassword);
-  // if (isUserExist && checkPasswordStatus === false) {
-  //   throw new ApiError(httpStatus.NOT_FOUND, 'Password is incorrect');
-  // }
 
   if (
     isUserExist.password &&
@@ -123,4 +114,69 @@ const refreshToken = async (token: string) => {
     accessToken: newAccessToken,
   };
 };
-export const authServices = { loginUser, refreshToken };
+
+const updatePassword = async (id: string, payload: any): Promise<any> => {
+  const { oldPassword, newPassword } = payload;
+
+  let isUserExist: any;
+
+  const admin = await prisma.admin.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  const doctor = await prisma.doctor.findUnique({
+    where: { id },
+  });
+
+  const medicineMan = await prisma.medicineMan.findUnique({
+    where: { id },
+  });
+
+  if (!admin && !doctor && !medicineMan) {
+    throw new Error('User does not exist');
+  }
+
+  if (admin || doctor || medicineMan) {
+    isUserExist = admin || doctor || medicineMan;
+  }
+
+  if (
+    isUserExist.password &&
+    !(await checkPassword(oldPassword, isUserExist.password))
+  ) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
+  }
+
+  const hashedPassword = await hashPassword(newPassword);
+
+  if (admin) {
+    const result = await prisma.admin.update({
+      where: { id },
+      data: {
+        password: hashedPassword,
+      },
+    });
+
+    return result;
+  } else if (doctor) {
+    const result = await prisma.doctor.update({
+      where: { id },
+      data: {
+        password: hashedPassword,
+      },
+    });
+    return result;
+  } else {
+    const result = await prisma.medicineMan.update({
+      where: { id },
+      data: {
+        password: hashedPassword,
+      },
+    });
+    return result;
+  }
+};
+
+export const authServices = { loginUser, refreshToken, updatePassword };

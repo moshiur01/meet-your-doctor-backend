@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Doctor, Prisma } from '@prisma/client';
+import hashPassword from '../../../helpers/hashPassword';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
@@ -12,8 +13,16 @@ import {
 import { IDoctorFilterRequest } from './doctor.interface';
 
 const createDoctor = async (data: Doctor): Promise<any> => {
+  const { password, ...restData } = data;
+
+  //hash password
+  const newPassword = await hashPassword(password);
+
   const result = prisma.doctor.create({
-    data,
+    data: {
+      ...restData,
+      password: newPassword,
+    },
     include: {
       specialization: true,
     },

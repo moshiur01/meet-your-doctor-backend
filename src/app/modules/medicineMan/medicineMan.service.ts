@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MedicineMan, Prisma } from '@prisma/client';
+import hashPassword from '../../../helpers/hashPassword';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
@@ -8,9 +9,18 @@ import { medicineManSearchableFields } from './medicinMan.constrain';
 import { IMedicineManFilterRequest } from './medicineMan.interface';
 
 const createMedicineMan = async (data: MedicineMan): Promise<MedicineMan> => {
-  const result = prisma.medicineMan.create({
-    data,
+  const { password, ...restData } = data;
+
+  //hash password
+  const newPassword = await hashPassword(password);
+
+  const result = await prisma.medicineMan.create({
+    data: {
+      ...restData,
+      password: newPassword,
+    },
   });
+
   return result;
 };
 
