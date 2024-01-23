@@ -269,6 +269,7 @@ const getAllAppointment = async (
       doctor: {
         include: {
           specialization: true,
+          roomNumber: true,
         },
       },
       medicine: true,
@@ -308,7 +309,11 @@ const getSingleAppointment = async (
       id: id,
     },
     include: {
-      doctor: true,
+      doctor: {
+        include: {
+          roomNumber: true,
+        },
+      },
       medicine: true,
       payment: true,
       patient: true,
@@ -327,7 +332,11 @@ const getAllAppointmentsByPatients = async (
       patientId: id,
     },
     include: {
-      doctor: true,
+      doctor: {
+        include: {
+          roomNumber: true,
+        },
+      },
       medicine: true,
       payment: true,
       patient: true,
@@ -349,7 +358,11 @@ const getAllAppointmentsByDoctors = async (
       doctorId: id,
     },
     include: {
-      doctor: true,
+      doctor: {
+        include: {
+          roomNumber: true,
+        },
+      },
       medicine: true,
       payment: true,
       patient: true,

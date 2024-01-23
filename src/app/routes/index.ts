@@ -13,6 +13,7 @@ import { PatientRoutes } from '../modules/patients/patient.routes';
 import { paymentRoutes } from '../modules/payment/payment.routes';
 import { PlatformReviewRoutes } from '../modules/platformReview/platformReview.routes';
 import { doctorReviewRoutes } from '../modules/reviews/review.routes';
+import { roomNumberRoutes } from '../modules/roomNumber/roomNumber.routes';
 import { specializationRoutes } from '../modules/specializations/specialization.routes';
 import { timeSlotRoutes } from '../modules/timeSlot/timeSlot.routes';
 
@@ -27,6 +28,10 @@ const moduleRoutes = [
   {
     path: '/doctors',
     route: doctorRoutes,
+  },
+  {
+    path: '/roomNumbers',
+    route: roomNumberRoutes,
   },
   {
     path: '/doctor-educations',

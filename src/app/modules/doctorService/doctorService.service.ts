@@ -58,7 +58,11 @@ const getAllDoctorService = async (
     include: {
       appointments: true,
       slot: true,
-      doctor: true,
+      doctor: {
+        include: {
+          roomNumber: true,
+        },
+      },
     },
     orderBy:
       options.sortBy && options.sortOrder
@@ -92,7 +96,11 @@ const getSingleDoctorService = async (
       doctorId: id,
     },
     include: {
-      doctor: true,
+      doctor: {
+        include: {
+          roomNumber: true,
+        },
+      },
       appointments: true,
       slot: true,
     },
@@ -108,7 +116,11 @@ const getOnlySingleDoctorService = async (
       id,
     },
     include: {
-      doctor: true,
+      doctor: {
+        include: {
+          roomNumber: true,
+        },
+      },
       appointments: true,
       slot: true,
     },

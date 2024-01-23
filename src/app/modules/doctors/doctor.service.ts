@@ -13,21 +13,37 @@ import {
 import { IDoctorFilterRequest } from './doctor.interface';
 
 const createDoctor = async (data: Doctor): Promise<any> => {
-  const { password, ...restData } = data;
+  const addDoctor = await prisma.$transaction(async transactionClient => {
+    //create doctor data
+    const { password, ...restData } = data;
 
-  //hash password
-  const newPassword = await hashPassword(password);
+    //hash password
+    const newPassword = await hashPassword(password);
 
-  const result = prisma.doctor.create({
-    data: {
-      ...restData,
-      password: newPassword,
-    },
-    include: {
-      specialization: true,
-    },
+    const result = await transactionClient.doctor.create({
+      data: {
+        ...restData,
+        password: newPassword,
+      },
+    });
+
+    //update room status
+    await transactionClient.roomNumber.update({
+      where: {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        id: data?.roomNumberId,
+      },
+      data: {
+        isBooked: true,
+      },
+    });
+    return {
+      doctor: result,
+    };
   });
-  return result;
+
+  return addDoctor;
 };
 
 const getAllDoctor = async (
@@ -96,6 +112,7 @@ const getAllDoctor = async (
       experiences: true,
       appointments: true,
       timeSlots: true,
+      roomNumber: true,
     },
   });
 
@@ -125,6 +142,7 @@ const getSingleDoctor = async (id: string): Promise<Doctor | null> => {
       educations: true,
       experiences: true,
       timeSlots: true,
+      roomNumber: true,
     },
   });
   return result;

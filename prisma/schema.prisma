@@ -91,6 +91,10 @@ model Doctor {
   specializationId String         @map("specialization_id")
   specialization   Specialization @relation(fields: [specializationId], references: [id])
 
+  roomNumberId String? @unique
+
+  roomNumber roomNumber? @relation(fields: [roomNumberId], references: [id])
+
   timeSlots TimeSlot[]
 
   appointments Appointment[]
@@ -286,4 +290,19 @@ model Admin {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("admins")
+}
+
+model roomNumber {
+  id String @id @default(uuid())
+
+  roomNumber String @map("room_number")
+
+  isBooked Boolean @default(false) @map("is_booked")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  doctor Doctor?
+
+  @@map("room_numbers")
 }
